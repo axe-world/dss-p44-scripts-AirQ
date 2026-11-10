@@ -1,0 +1,20 @@
+{
+  "message": "init",
+  "protocol": "json",
+  "name": "air-Q Luftqualität",
+  "modelname": "air-Q",
+  "group": 8,
+  "colorclass": 8,
+  "sensors": [
+    {"id":"co2",         "hardwarename":"CO2",                "sensortype":22,"usage":1,"min":0,"max":10000,"resolution":1,"updateinterval":900,"alivesigninterval":2700},
+    {"id":"co",          "hardwarename":"CO",                 "sensortype":5, "usage":1,"min":0,"max":1000,"resolution":0.01,"updateinterval":900,"alivesigninterval":2700},
+    {"id":"temperature", "hardwarename":"Temperatur",         "sensortype":1, "usage":1,"min":-40,"max":100,"resolution":0.1,"updateinterval":900,"alivesigninterval":2700},
+    {"id":"sound",       "hardwarename":"Lautstärke",          "sensortype":20,"usage":1,"min":0,"max":140,"resolution":0.1,"updateinterval":900,"alivesigninterval":2700},
+    {"id":"humidity",    "hardwarename":"Feuchtigkeit",       "sensortype":2, "usage":1,"min":0,"max":100,"resolution":0.1,"updateinterval":900,"alivesigninterval":2700},
+    {"id":"pressure",    "hardwarename":"Luftdruck",           "sensortype":18,"usage":1,"min":300,"max":1200,"resolution":0.1,"updateinterval":900,"alivesigninterval":2700},
+    {"id":"pm1",         "hardwarename":"PM1",                "sensortype":10,"usage":1,"min":0,"max":2000,"resolution":0.1,"updateinterval":900,"alivesigninterval":2700},
+    {"id":"pm2_5",       "hardwarename":"PM2.5",              "sensortype":9, "usage":1,"min":0,"max":2000,"resolution":0.1,"updateinterval":900,"alivesigninterval":2700},
+    {"id":"pm10",        "hardwarename":"PM10",               "sensortype":8, "usage":1,"min":0,"max":2000,"resolution":0.1,"updateinterval":900,"alivesigninterval":2700}
+  ]
+}
+

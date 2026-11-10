@@ -1,0 +1,38 @@
+// air-Q
+// Credentials nur in der P44 speichern, niemals ins Log schreiben.
+var airqIp = '192.168.1.1'; // ANPASSEN
+var airqPassword = 'ANPASSEN'; // ANPASSEN
+var sensorIds = ['co2','co','temperature','sound','humidity','pressure','pm1','pm2_5','pm10'];
+
+function pollAirQ() {
+  try {
+    var r=httprequest({url:'http://'+airqIp+'/data',method:'GET',timeout:8,withmeta:true});
+    if (r.status!=200) throw 'air-Q HTTP '+r.status;
+    var envelope=json(r.data);
+    if (!isvalid(envelope.content)) throw 'air-Q JSON ohne content';
+    log(4,'ENCRYPTED base64: %s', envelope.content);
+    var decoded = decode('base64',envelope.content);
+    var iv = substr(decoded, 0, 16);
+    var ciphertext = substr(decoded, 16);
+    var key = substr(airqPassword + strrep("0", 32), 0, 32);
+    var decrypted = json(decrypt('AES-256-CBC',ciphertext,key,iv,true))
+    log(4,'DECRYPTED: %s', decrypted)
+    for (var i=0;i<9;i++) {
+      var v=decrypted[sensorIds[i]];
+      if (isvalid(v) && elements(v)>0) v=v[0];
+      if (isvalid(v) && v!=null) message({message:'sensor',index:i,value:v});
+      else message({message:'sensor',index:i,value:null});
+    }
+    message({message:'opstate',level:100,text:'air-Q OK'});
+  }
+  catch as err {
+    log(4,'air-Q Abfrage/Entschluesselung fehlgeschlagen: %s',err);
+    message({message:'opstate',level:0,text:'air-Q Datenfehler'});
+    for (var i=0;i<9;i++) message({message:'sensor',index:i,value:null});
+  }
+}
+
+
+pollAirQ();
+on (every(0:01)) { pollAirQ(); }
+return true;
